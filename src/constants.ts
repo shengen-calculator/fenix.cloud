@@ -1,0 +1,4 @@
+export const MSSQL_USER = 'MSSQL_USER';
+export const MSSQL_PASSWORD = 'MSSQL_PASSWORD';
+export const MSSQL_ADDRESS = 'MSSQL_ADDRESS';
+export const MSSQL_DATABASE = 'MSSQL_DATABASE';

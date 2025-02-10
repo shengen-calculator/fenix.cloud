@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 export const GET_CLIENT_PAYMENTS = `
             SELECT ID_Касса                             as id,
                    Цена                                 as amountEur,

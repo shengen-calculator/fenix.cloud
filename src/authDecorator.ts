@@ -20,7 +20,7 @@ const decorated = (wrapped: Promise<any>, roles: ROLE[],
             if (!request.auth) {
                 throw new HttpsError("failed-precondition",
                     "The function must be called while authenticated.");
-            } else if (!~roles.indexOf(request.auth?.token?.role)) {
+            } else if (!~roles.indexOf(request.auth?.token?.["role"] as ROLE)) {
                 throw new HttpsError("failed-precondition",
                     `Only ${roles} can call this function`);
             }

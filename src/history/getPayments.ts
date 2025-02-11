@@ -1,7 +1,7 @@
-import {CallableRequest} from "firebase-functions/lib/common/providers/https";
-import {format} from "string-template";
+import format from "string-template";
 import {GET_CLIENT_PAYMENTS} from "../sqlQueries";
 import SqlHelper from "../SqlHelper";
+import {CallableRequest} from "firebase-functions/lib/common/providers/https";
 
 export const getPayments = async (request: CallableRequest) => {
     const data: GetPaymentsInput = request.data;

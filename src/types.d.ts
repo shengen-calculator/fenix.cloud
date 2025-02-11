@@ -15,3 +15,7 @@ type BaseInput = {
 }
 
 type GetPaymentsInput = BaseInput
+
+type GetSalesInput = BaseInput
+
+type GetReturnsInput = BaseInput

@@ -6,4 +6,4 @@ export const getCurrencyRate = async (request: CallableRequest) => {
     const sqlHelper = new SqlHelper(GET_CURRENCY_RATE);
     const sqlResponse = await sqlHelper.sendQuery();
     return sqlResponse.recordset;
-}
+};

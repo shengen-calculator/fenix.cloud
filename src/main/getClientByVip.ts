@@ -8,9 +8,9 @@ export const getClientByVip = async (request: CallableRequest) => {
     const sqlQuery = format(GET_CLIENT, {
         vip: SqlHelper.getUserVip({
             vip,
-        }, request.auth)
+        }, request.auth),
     });
     const sqlHelper = new SqlHelper(sqlQuery);
     const sqlResponse = await sqlHelper.sendQuery();
     return sqlResponse.recordset;
-}
+};

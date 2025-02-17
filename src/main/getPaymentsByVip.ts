@@ -8,17 +8,16 @@ export const getPaymentsByVip = async (request: CallableRequest) => {
     const sqlGetClientQuery = format(GET_CLIENT_INFO, {
         vip: SqlHelper.getUserVip({
             vip,
-        }, request.auth)
+        }, request.auth),
     });
     const sqlGetClientHelper = new SqlHelper(sqlGetClientQuery);
     const sqlGetClientResponse = await sqlGetClientHelper.sendQuery();
-    const id = parseInt(sqlGetClientResponse.recordset[0]['id']);
-    const days = parseInt(sqlGetClientResponse.recordset[0]['days']);
+    const debtInfo: DebtInfo = sqlGetClientResponse.recordset.pop();
     const sqlGetPaymentsQuery = format(GET_CLIENT_PAYMENTS, {
-        id,
-        days,
+        id: debtInfo.id,
+        days: debtInfo.days,
     });
     const sqlGetPaymentsHelper = new SqlHelper(sqlGetPaymentsQuery);
     const sqlGetPaymentsResponse = await sqlGetPaymentsHelper.sendQuery();
     return sqlGetPaymentsResponse.recordset;
-}
+};

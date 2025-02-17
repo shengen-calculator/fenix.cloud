@@ -15,6 +15,11 @@ type SqlConfigOptions = {
     enableArithAbort: boolean
 }
 
+type DebtInfo = {
+    id: number,
+    days: number
+}
+
 type BaseInput = {
     vip?: string
     offset?: number

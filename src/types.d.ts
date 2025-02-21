@@ -32,6 +32,10 @@ type GetAnalogsInput = {
     number: string
 }
 
+type AnalogInfo = {
+    analogId: number
+}
+
 type GetPaymentsInput = BaseInput
 
 type GetSalesInput = BaseInput

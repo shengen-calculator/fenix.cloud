@@ -1,6 +1,9 @@
 import * as format from "string-template";
 import {CallableRequest} from "firebase-functions/lib/common/providers/https";
-import {GET_ANALOG_BY_BRAND_AND_NUMBER} from "./searchQueries";
+import {
+    GET_ANALOG_BY_BRAND_AND_NUMBER,
+    GET_ANALOGS_BY_ID,
+} from "./searchQueries";
 import SqlHelper from "../SqlHelper";
 
 export const getAnalogs = async (request: CallableRequest) => {
@@ -13,5 +16,14 @@ export const getAnalogs = async (request: CallableRequest) => {
         });
         const sqlHelper = new SqlHelper(sqlQuery);
         const sqlResponse = await sqlHelper.sendQuery();
+        const analogInfo: AnalogInfo = sqlResponse.recordset.pop();
+        analogId = analogInfo.analogId;
     }
-}
+
+    const sqlQuery = format(GET_ANALOGS_BY_ID, {
+        analogId,
+    });
+    const sqlHelper = new SqlHelper(sqlQuery);
+    const sqlResponse = await sqlHelper.sendQuery();
+    return sqlResponse.recordset;
+};

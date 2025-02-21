@@ -31,6 +31,16 @@ type GetClientStatisticInput = {
     endDate: string
 }
 
+type GetAnalogsInput = {
+    analogId?: number
+    brand: string
+    number: string
+}
+
+type AnalogInfo = {
+    analogId: number
+}
+
 type GetPaymentsInput = BaseInput
 
 type GetSalesInput = BaseInput

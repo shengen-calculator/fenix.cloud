@@ -2,22 +2,24 @@ type QueryResult = {
     recordset: Array<any>
 }
 
-type SqlConfig = {
-    user: string,
-    password: string,
-    server: string,
-    database: string,
-    options: SqlConfigOptions
+type SqlParameter = {
+    name: string
+    type: import("mssql").ISqlTypeFactoryWithNoParams
+    value: string | number
 }
 
-type SqlConfigOptions = {
-    encrypt: boolean
-    enableArithAbort: boolean
+type SqlRequest = {
+    request: import("mssql").Request
+    query: string
 }
 
 type DebtInfo = {
-    id: number,
+    id: number
     days: number
+}
+
+type BalanceInfo = {
+    result: number
 }
 
 type BaseInput = {
@@ -29,6 +31,13 @@ type BaseInput = {
 type GetClientStatisticInput = {
     startDate: string
     endDate: string
+}
+
+type GetReconciliationDataInput = {
+    startDate: string
+    endDate: string
+    isEuroClient: boolean
+    clientId?: number
 }
 
 type GetAnalogsInput = {
@@ -46,3 +55,14 @@ type GetPaymentsInput = BaseInput
 type GetSalesInput = BaseInput
 
 type GetReturnsInput = BaseInput
+
+interface ReconciliationRow {
+    invoiceNumber: number;
+    invoiceDate: string;
+    brand?: string;
+    number?: string;
+    description: string;
+    priceUah?: number;
+    priceEur?: number;
+    quantity: number;
+}

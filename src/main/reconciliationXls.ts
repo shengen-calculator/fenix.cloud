@@ -1,25 +1,16 @@
-import * as excel from 'exceljs';
-import * as os from 'os';
-import * as fs from 'fs';
-import * as admin from 'firebase-admin';
-import * as path from 'path';
-import configuration from '../settings';
-
-// Define the expected structure of reconciliation data
-interface ReconciliationData {
-    invoiceNumber: number;
-    invoiceDate: string;
-    brand?: string;
-    number?: string;
-    description: string;
-    priceUah?: number;
-    priceEur?: number;
-    quantity: number;
-}
+import * as admin from "firebase-admin";
+import * as excel from "exceljs";
+import * as path from "path";
+import * as fs from "fs";
+import os from "os";
+import {GetSignedUrlConfig} from "@google-cloud/storage/build/cjs/src/file";
+import {UploadOptions} from "@google-cloud/storage/build/cjs/src/bucket";
+import {defineString} from "firebase-functions/params";
+import {BUCKET_ID, XLS_CONTENT_TYPE} from "../constants";
 
 // Function to generate reconciliation XLS link
 export const getReconciliationXlsLink = async (
-    data: ReconciliationData[],
+    data: ReconciliationRow[],
     balance: number,
     fileName: string,
     startDate: string,
@@ -144,7 +135,7 @@ export const getReconciliationXlsLink = async (
 
     const resultFilePath = `OutBox/${fileName}`;
     const tempLocalResultFile = path.join(os.tmpdir(), fileName);
-    const contentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const contentType = defineString(XLS_CONTENT_TYPE).value();
     const metadata = {
         contentType,
         contentDisposition: `attachment; filename="${fileName}"`
@@ -152,25 +143,31 @@ export const getReconciliationXlsLink = async (
 
     await workbook.xlsx.writeFile(tempLocalResultFile);
 
-    await getBucket().upload(tempLocalResultFile, { destination: resultFilePath, metadata });
+    const uploadOptions = {
+        destination: resultFilePath,
+        metadata
+    }
+
+    await getBucket().upload(tempLocalResultFile, uploadOptions as UploadOptions);
 
     fs.unlinkSync(tempLocalResultFile);
 
     const expDate = new Date();
     expDate.setTime(expDate.getTime() + 2 * 24 * 60 * 60 * 1000);
 
+
     const config = {
-        action: 'read' as const,
-        expires: `${expDate.getMonth() + 1}-${expDate.getDate()}-${expDate.getFullYear()}`
+        action: "read",
+        expires: `${expDate.getMonth() + 1}-${expDate.getDate()}-${expDate.getFullYear()}`,
     };
 
     const resultFile = getBucket().file(resultFilePath);
 
-    return await resultFile.getSignedUrl(config);
+    return await resultFile.getSignedUrl(config as GetSignedUrlConfig);
 };
 
 // Helper function to get Firebase storage bucket
-const getBucket = () => admin.storage().bucket(configuration.bucketId);
+const getBucket = () => admin.storage().bucket(defineString(BUCKET_ID).value());
 
 // Function to color a row
 const paintRow = (worksheet: excel.Worksheet, columnsNumber: number, row: number) => {

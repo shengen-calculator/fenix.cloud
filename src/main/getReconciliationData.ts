@@ -1,48 +1,61 @@
-import {GET_BALANCE, GET_RECONCILIATION_DATA} from "./mainQueries";
+import * as sql from "mssql";
+import SqlHelper from "../SqlHelper";
+import {
+    CallableRequest
+} from "firebase-functions/lib/common/providers/https";
+import {
+    GET_BALANCE,
+    GET_RECONCILIATION_DATA
+} from "./mainQueries";
+import {getReconciliationXlsLink} from "./reconciliationXls";
 
-const functions = require('firebase-functions');
-const reconciliationXls = require('./reconciliationXls');
-const sql = require('mssql');
-const config = require('../mssql.connection').config;
-const util = require('../util');
 
-const getReconciliationData = async (data, context) => {
-
-    if (data.clientId) {
-        util.checkForManagerRole(context);
-    } else {
-        util.checkForClientRole(context);
-    }
-    try {
-        const pool = await sql.connect(config);
-
-        const [records, balance] = await Promise.all([
-            pool.request()
-                .input('clientId', sql.Int, data.clientId ? data.clientId : context.auth.token.clientId)
-                .input('startDate', sql.Date, data.startDate)
-                .input('endDate', sql.Date, data.endDate)
-                .query(GET_RECONCILIATION_DATA),
-            pool.request()
-                .input('clientId', sql.Int, data.clientId ? data.clientId : context.auth.token.clientId)
-                .input('day', sql.Date, data.startDate)
-                .query(GET_BALANCE)
-        ]);
-
-        const fileName = data.clientId ? `K0000${context.auth ? context.auth.token.vip : 'test'}-${data.clientId}.xlsx` :
-            `K0000${context.auth.token.vip}.xlsx`;
-        const initialBalance = balance.recordset[0]['result'] ? balance.recordset[0]['result'] : 0;
-        console.log(initialBalance);
-        return await reconciliationXls.getReconciliationXlsLink(records.recordset,
-            initialBalance, fileName, data.startDate, data.endDate, data.isEuroClient);
-
-    } catch (err) {
-        if(err) {
-            throw new functions.https.HttpsError('internal',
-                err.message);
+export const getReconciliationData = async (request: CallableRequest) => {
+    const data: GetReconciliationDataInput = request.data;
+    const clientId = SqlHelper.getClientId(data.clientId, request.auth);
+    const sqlHelper = new SqlHelper();
+    const pool = await sqlHelper.getPool();
+    const recordsRequest = sqlHelper.createPoolRequest(pool, [
+        {
+            name: "clientId",
+            type: sql.Int,
+            value: clientId,
+        }, {
+            name: "startDate",
+            type: sql.Date,
+            value: data.startDate,
+        }, {
+            name: "endDate",
+            type: sql.Date,
+            value: data.endDate,
         }
-        return {error: err.message};
-    }
+    ], GET_RECONCILIATION_DATA);
+
+    const balanceRequest = sqlHelper.createPoolRequest(pool, [
+        {
+            name: "clientId",
+            type: sql.Int,
+            value: clientId,
+        }, {
+            name: "day",
+            type: sql.Date,
+            value: data.startDate,
+        }
+    ], GET_BALANCE);
+
+    const [reconciliationResponse, balanceResponse] = sqlHelper.sendRequests([
+        recordsRequest,
+        balanceRequest
+    ]);
+
+
+    const fileName =
+        `K0000${request.auth ? request.auth.token["vip"] : "test"}-${clientId}.xlsx`;
+
+    const balanceInfo: BalanceInfo = balanceResponse.recordset.pop();
+    const initialBalance = balanceInfo.result ? balanceInfo.result : 0;
+
+    return await getReconciliationXlsLink(reconciliationResponse.recordset,
+        initialBalance, fileName, data.startDate, data.endDate, data.isEuroClient);
 
 };
-
-module.exports = getReconciliationData;

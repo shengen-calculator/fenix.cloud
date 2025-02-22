@@ -7,7 +7,7 @@ import {
     GET_BALANCE,
     GET_RECONCILIATION_DATA
 } from "./mainQueries";
-import {getReconciliationXlsLink} from "./reconciliationXls";
+import ReconciliationReport from "./ReconciliationReport";
 
 
 export const getReconciliationData = async (request: CallableRequest) => {
@@ -43,7 +43,7 @@ export const getReconciliationData = async (request: CallableRequest) => {
         }
     ], GET_BALANCE);
 
-    const [reconciliationResponse, balanceResponse] = sqlHelper.sendRequests([
+    const [reconciliationData, balanceData] = sqlHelper.sendRequests([
         recordsRequest,
         balanceRequest
     ]);
@@ -52,10 +52,17 @@ export const getReconciliationData = async (request: CallableRequest) => {
     const fileName =
         `K0000${request.auth ? request.auth.token["vip"] : "test"}-${clientId}.xlsx`;
 
-    const balanceInfo: BalanceInfo = balanceResponse.recordset.pop();
+    const balanceInfo: BalanceInfo = balanceData.recordset.pop();
     const initialBalance = balanceInfo.result ? balanceInfo.result : 0;
 
-    return await getReconciliationXlsLink(reconciliationResponse.recordset,
-        initialBalance, fileName, data.startDate, data.endDate, data.isEuroClient);
-
+    const report = new ReconciliationReport({
+        data: reconciliationData.recordset,
+        balance: initialBalance,
+        fileName: fileName,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        isEuroClient: data.isEuroClient,
+    });
+    const workbook = report.generateWorkbook();
+    return await report.getReportLink(workbook);
 };

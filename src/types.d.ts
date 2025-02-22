@@ -56,7 +56,16 @@ type GetSalesInput = BaseInput
 
 type GetReturnsInput = BaseInput
 
-interface ReconciliationRow {
+type ReconciliationParams = {
+    data: ReconciliationRow[],
+    balance: number
+    fileName: string
+    startDate: string
+    endDate: string
+    isEuroClient: boolean
+}
+
+type ReconciliationRow = {
     invoiceNumber: number;
     invoiceDate: string;
     brand?: string;

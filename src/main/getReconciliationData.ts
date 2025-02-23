@@ -49,12 +49,16 @@ export const getReconciliationData = async (request: CallableRequest) => {
     ]);
 
 
-    const fileName =
+    const fileName = data.clientId ?
         `K0000${
             request.auth ?
                 request.auth.token["vip"] :
                 "test"
-        }-${clientId}.xlsx`;
+        }-${clientId}.xlsx` :
+        `K0000${
+            request.auth ?
+                request.auth.token["vip"] :
+                "test"}.xlsx`
 
     const balanceInfo: BalanceInfo = balanceData.recordset.pop();
     const initialBalance = balanceInfo.result ? balanceInfo.result : 0;

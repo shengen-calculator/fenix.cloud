@@ -14,10 +14,9 @@ export const beforeCreate = async (user?: AuthUserRecord) => {
     const sqlHelper = new SqlHelper(sqlQuery);
     const sqlResponse = await sqlHelper.sendQuery();
     const userInfo: UserInfo = sqlResponse.recordset.pop();
-
-    if (email && userInfo && userInfo.isWebUser) {
-        return;
+    const isWebUser = email && userInfo && userInfo.isWebUser;
+    if (!isWebUser) {
+        throw new HttpsError("invalid-argument",
+            `Unauthorized email "${email}"`);
     }
-    throw new HttpsError("invalid-argument",
-        `Unauthorized email "${email}"`);
 };

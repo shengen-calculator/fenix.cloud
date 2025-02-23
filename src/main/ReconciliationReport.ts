@@ -59,7 +59,7 @@ export default class ReconciliationReport {
                            invoiceTotal: number,
                            index: number) => {
         // eslint-disable-next-line no-sparse-arrays
-        worksheet.addRow([, , , , , , , , Math.round(balance * 100) / 100]);
+        worksheet.addRow([, , , , , , , , , Math.round(balance * 100) / 100]);
         worksheet.mergeCells(`F${index}:G${index}`);
         worksheet.getCell(`G${index}`).value = "Всього";
         worksheet.getCell(`H${index}`).value = invoiceTotal;

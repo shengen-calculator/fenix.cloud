@@ -58,7 +58,7 @@ export const getReconciliationData = async (request: CallableRequest) => {
         `K0000${
             request.auth ?
                 request.auth.token["vip"] :
-                "test"}.xlsx`
+                "test"}.xlsx`;
 
     const balanceInfo: BalanceInfo = balanceData.recordset.pop();
     const initialBalance = balanceInfo.result ? balanceInfo.result : 0;

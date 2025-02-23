@@ -92,7 +92,8 @@ export default class SqlHelper {
         try {
             return await sql.connect(this.config);
         } catch (err: any) {
-            throw new HttpsError("internal", err.message);
+            throw new HttpsError("internal",
+                err.message || "Unknown error occurred");
         }
     }
 
@@ -132,7 +133,8 @@ export default class SqlHelper {
                 })
             );
         } catch (err: any) {
-            throw new HttpsError("internal", err.message);
+            throw new HttpsError("internal",
+                err.message || "Unknown error occurred");
         }
     }
 }

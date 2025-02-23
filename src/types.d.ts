@@ -18,6 +18,20 @@ type DebtInfo = {
     days: number
 }
 
+type UserInfo = {
+    id: number
+    vip: string
+    fullName: string
+    isEuroClient: boolean
+    isWebUser: boolean
+}
+
+type Claims = {
+    role: number
+    vip: string
+    clientId: number
+}
+
 type BalanceInfo = {
     result: number
 }

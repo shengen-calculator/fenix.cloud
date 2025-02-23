@@ -18,6 +18,11 @@ type DebtInfo = {
     days: number
 }
 
+type UnblockRecord = {
+    date: Date;
+    email: string;
+}
+
 type UserInfo = {
     id: number
     vip: string

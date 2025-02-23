@@ -9,7 +9,7 @@ import {
 } from "./constants";
 import {AuthData} from "firebase-functions/lib/common/providers/https";
 import {ROLE} from "./role";
-import {ConnectionPool, IResult, Request, config} from "mssql";
+import {ConnectionPool, IResult, config} from "mssql";
 
 /**
  * Can help to retrieve data from MS SQL Server
@@ -24,27 +24,10 @@ export default class SqlHelper {
 
     /**
      * Create a new instance
-     */
-    constructor() {
-        this.config = {
-            user: this.user,
-            password: this.password,
-            // You can use 'localhost\\instance' to connect to named instance
-            server: this.server,
-            database: this.database,
-            options: {
-                encrypt: false, // Use this if you're on Windows Azure
-                enableArithAbort: true,
-            },
-        };
-    }
-
-    /**
-     * Create a new instance
      * @param {string} query
      */
-    constructor(query: string) {
-        this.query = query;
+    constructor(query?: string) {
+        this.query = query ? query : "";
         this.config = {
             user: this.user,
             password: this.password,
@@ -121,15 +104,17 @@ export default class SqlHelper {
      *
      * @return {SqlRequest} pool request with query
      */
-    public createPoolRequest(connectionPool: ConnectionPool, params: Array<SqlParameter>, query: string): SqlRequest {
+    public createPoolRequest(connectionPool: ConnectionPool,
+                             params: Array<SqlParameter>,
+                             query: string): SqlRequest {
         const request = connectionPool.request();
-        for (const parameter: SqlParameter of params) {
+        for (const parameter of params) {
             request.input(parameter.name, parameter.type, parameter.value);
         }
         return {
             request,
-            query
-        }
+            query,
+        };
     }
 
     /**
@@ -138,7 +123,8 @@ export default class SqlHelper {
      *
      * @return {Promise<Array<IResult<any>>>} result
      */
-    public async sendRequests(sqlRequests: Array<SqlRequest>): Promise<Array<IResult<any>>> {
+    public async sendRequests(
+        sqlRequests: Array<SqlRequest>): Promise<Array<IResult<any>>> {
         try {
             return await Promise.all(
                 sqlRequests.map((it) => {

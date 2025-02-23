@@ -78,7 +78,7 @@ export const GET_RECONCILIATION_DATA = `
           AND (CONVERT(date, Дата) >= @startDate)
           AND (CONVERT(date, Дата) < DATEADD(day, 1, @endDate))
         ORDER BY InvoiceDate, invoiceNumber`;
-export const GET_BALANCE = 'SELECT dbo.GetBalanceOnDate(@clientId, @day) as result';
+export const GET_BALANCE = "SELECT dbo.GetBalanceOnDate(@clientId, @day) as result";
 export const GET_CLIENT_BY_EMAIL = `
       SELECT TOP (3)
            ID_Клиента                               as id

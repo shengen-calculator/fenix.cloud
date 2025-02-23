@@ -1,11 +1,11 @@
 import * as sql from "mssql";
 import SqlHelper from "../SqlHelper";
 import {
-    CallableRequest
+    CallableRequest,
 } from "firebase-functions/lib/common/providers/https";
 import {
     GET_BALANCE,
-    GET_RECONCILIATION_DATA
+    GET_RECONCILIATION_DATA,
 } from "./mainQueries";
 import ReconciliationReport from "./ReconciliationReport";
 
@@ -28,7 +28,7 @@ export const getReconciliationData = async (request: CallableRequest) => {
             name: "endDate",
             type: sql.Date,
             value: data.endDate,
-        }
+        },
     ], GET_RECONCILIATION_DATA);
 
     const balanceRequest = sqlHelper.createPoolRequest(pool, [
@@ -40,17 +40,21 @@ export const getReconciliationData = async (request: CallableRequest) => {
             name: "day",
             type: sql.Date,
             value: data.startDate,
-        }
+        },
     ], GET_BALANCE);
 
-    const [reconciliationData, balanceData] = sqlHelper.sendRequests([
+    const [reconciliationData, balanceData] = await sqlHelper.sendRequests([
         recordsRequest,
-        balanceRequest
+        balanceRequest,
     ]);
 
 
     const fileName =
-        `K0000${request.auth ? request.auth.token["vip"] : "test"}-${clientId}.xlsx`;
+        `K0000${
+            request.auth ?
+                request.auth.token["vip"] :
+                "test"
+        }-${clientId}.xlsx`;
 
     const balanceInfo: BalanceInfo = balanceData.recordset.pop();
     const initialBalance = balanceInfo.result ? balanceInfo.result : 0;

@@ -1,5 +1,9 @@
 import {HttpsError} from "firebase-functions/v2/https";
-import {Datastore, Query} from "@google-cloud/datastore";
+import {
+    Datastore,
+    InsertResponse,
+    Query,
+} from "@google-cloud/datastore";
 
 /**
  * Can help get data from Firestore
@@ -24,6 +28,19 @@ export default class DatastoreHelper {
     public async runQuery(): Promise<any> {
         try {
             return await this.datastore.runQuery(this.query);
+        } catch (err: any) {
+            throw new HttpsError("internal",
+                err.details || "Unknown error occurred");
+        }
+    }
+
+    /**
+     * Save entity to Firestore
+     * @param {any} entity
+     */
+    public async insertEntity(entity: any): Promise<InsertResponse> {
+        try {
+            return await this.datastore.insert(entity);
         } catch (err: any) {
             throw new HttpsError("internal",
                 err.details || "Unknown error occurred");

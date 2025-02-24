@@ -11,6 +11,7 @@ import {getCurrencyRate} from "./main/getCurrencyRate";
 import {getPaymentsByVip} from "./main/getPaymentsByVip";
 import {getReconciliationData} from "./main/getReconciliationData";
 import {getUnblockRecords} from "./main/getUnblockRecords";
+import {unblockClient} from "./main/unblockClient";
 import {ROLE} from "./role";
 import {FUNC_REGION, SERVICE_ACCOUNT} from "./constants";
 
@@ -23,6 +24,8 @@ exports.getPaymentsByVip = authDecorator(getPaymentsByVip,
 exports.getReconciliationData = authDecorator(getReconciliationData,
     [ROLE.ADMIN, ROLE.MANAGER, ROLE.CLIENT]);
 exports.getUnblockRecords = authDecorator(getUnblockRecords,
+    [ROLE.ADMIN]);
+exports.unblockClient = authDecorator(unblockClient,
     [ROLE.ADMIN]);
 exports.beforeCreate = beforeUserCreated({
     region: defineString(FUNC_REGION),

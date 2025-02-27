@@ -59,6 +59,11 @@ type GetReconciliationDataInput = {
     clientId?: number
 }
 
+type GetPhotosInput = {
+    number: string
+    brand: string
+}
+
 type GetAnalogsInput = {
     analogId?: number
     brand: string

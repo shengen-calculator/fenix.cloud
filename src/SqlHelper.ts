@@ -42,6 +42,16 @@ export default class SqlHelper {
     }
 
     /**
+     * Check whether user belongs to Client role
+     * @param {AuthData} auth
+     *
+     * @return {boolean}
+     */
+    public static isClient(auth?: AuthData): boolean {
+        return auth?.token?.["role"] === ROLE.CLIENT;
+    }
+
+    /**
      * Returns vip depending on Role and Input
      * @param {BaseInput} data
      * @param {AuthData} auth

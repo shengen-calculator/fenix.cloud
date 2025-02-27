@@ -6,5 +6,6 @@ export const SERVICE_ACCOUNT = "SERVICE_ACCOUNT";
 export const FUNC_REGION = "FUNC_REGION";
 export const XLS_CONTENT_TYPE = "XLS_CONTENT_TYPE";
 export const BUCKET_ID = "BUCKET_ID";
+export const BUCKET_NAME = "BUCKET_NAME";
 export const MANAGERS = "MANAGERS";
 export const ADMINISTRATORS = "ADMINISTRATORS";

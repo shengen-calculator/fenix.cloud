@@ -14,8 +14,9 @@ export const unblockClient = async (request: CallableRequest) => {
             descending: true,
         })
         .limit(1);
-    const datastoreHelper = new DatastoreHelper(query, datastore);
-    const [entities] = await datastoreHelper.runQuery() as [UnblockRecord[]];
+    const datastoreHelper = new DatastoreHelper(datastore);
+    const [entities] = await datastoreHelper
+        .runQuery(query) as [UnblockRecord[]];
     const recordDate = entities.pop()?.date;
 
     // Check if the user is already unblocked today

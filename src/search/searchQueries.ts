@@ -26,3 +26,12 @@ export const GET_ANALOGS_BY_ID = `
                  LEFT OUTER JOIN
              dbo.Остаток_ ON dbo.[Каталог запчастей].ID_Запчасти = dbo.Остаток_.ID_Запчасти
         WHERE (dbo.[Каталог запчастей].ID_аналога = {analogId})`;
+export const GET_PARTS_BY_NUMBER = `
+       SELECT brand
+            ,number
+            ,shortNumber
+            ,description
+            ,productId
+            ,analogId
+            ,firstBrend
+       FROM getPartsByNumber('{number}')`;

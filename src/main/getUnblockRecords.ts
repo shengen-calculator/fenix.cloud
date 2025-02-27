@@ -12,8 +12,9 @@ export const getUnblockRecords = async (request: CallableRequest) => {
             descending: true,
         })
         .limit(10);
-    const datastoreHelper = new DatastoreHelper(query, datastore);
-    const [entities] = await datastoreHelper.runQuery() as [UnblockRecord[]];
+    const datastoreHelper = new DatastoreHelper(datastore);
+    const [entities] = await datastoreHelper
+        .runQuery(query) as [UnblockRecord[]];
     return entities.map((entity) => {
         return {
             date: entity.date.getTime(),

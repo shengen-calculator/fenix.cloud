@@ -4,13 +4,15 @@ type QueryResult = {
 
 type SqlParameter = {
     name: string
-    type: import("mssql").ISqlTypeFactoryWithNoParams
-    value: string | number
+    type: import("mssql").ISqlTypeFactoryWithNoParams |
+        import("mssql").ISqlTypeWithLength
+    value: string | number | boolean
 }
 
 type SqlRequest = {
     request: import("mssql").Request
     query: string
+    executeAsStoredProcedure: boolean
 }
 
 type DebtInfo = {
@@ -60,6 +62,15 @@ type GetReconciliationDataInput = {
 }
 
 type GetPhotosInput = {
+    number: string
+    brand: string
+}
+
+type SearchByBrandAndNumberInput = {
+    queryId?: string
+    analogId?: number
+    clientId?: number
+    originalNumber: string
     number: string
     brand: string
 }

@@ -28,15 +28,10 @@ export const getClientStatistic = async (request: CallableRequest) => {
         dataStore.runQuery(storeQuery),
         sqlHelper.sendQuery(),
     ]);
-    const dateTimeFormat = new Intl.DateTimeFormat("en", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-    });
     return {
         statistic: stat[0].map((x) => {
             const [{value: month},, {value: day},, {value: year}] =
-                dateTimeFormat.formatToParts(x.date);
+                SqlHelper.DateTimeFormat.formatToParts(x.date);
             return {
                 vip: x.vip,
                 brand: x.brand,

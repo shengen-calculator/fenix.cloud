@@ -112,12 +112,14 @@ export default class SqlHelper {
      * @param {ConnectionPool} connectionPool
      * @param {Array<SqlParameter>} params
      * @param {string} query
+     * @param {boolean} executeAsStoredProcedure
      *
      * @return {SqlRequest} pool request with query
      */
     public createPoolRequest(connectionPool: ConnectionPool,
                              params: Array<SqlParameter>,
-                             query: string): SqlRequest {
+                             query: string,
+                             executeAsStoredProcedure = false): SqlRequest {
         const request = connectionPool.request();
         for (const parameter of params) {
             request.input(parameter.name, parameter.type, parameter.value);
@@ -125,6 +127,7 @@ export default class SqlHelper {
         return {
             request,
             query,
+            executeAsStoredProcedure,
         };
     }
 
@@ -139,7 +142,9 @@ export default class SqlHelper {
         try {
             return await Promise.all(
                 sqlRequests.map((it) => {
-                    return it.request.query(it.query);
+                    return it.executeAsStoredProcedure ?
+                        it.request.execute(it.query) :
+                        it.request.query(it.query);
                 })
             );
         } catch (err: any) {
@@ -147,4 +152,10 @@ export default class SqlHelper {
                 err.message || "Unknown error occurred");
         }
     }
+
+    public static DateTimeFormat = new Intl.DateTimeFormat("en", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    });
 }

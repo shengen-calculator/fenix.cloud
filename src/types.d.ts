@@ -75,6 +75,11 @@ type SearchByBrandAndNumberInput = {
     brand: string
 }
 
+type GetDeliveryDateInput = {
+    productId: number
+    term: number
+}
+
 type GetAnalogsInput = {
     analogId?: number
     brand: string

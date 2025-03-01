@@ -105,3 +105,13 @@ export const GET_PARTS_BY_BRAND_AND_NUMBER = `
         WHERE (dbo.[Запросы клиентов].Заказано <> 0)
           AND (dbo.[Запросы клиентов].Доставлено = 0)
           AND (dbo.[Запросы клиентов].Обработано = 0)`;
+
+export const GET_DELIVERY_DATE = `
+            SET DATEFIRST 1
+            SELECT FORMAT(dbo.GetArrivalDate((
+                SELECT WarehouseId FROM [Каталоги поставщиков] WHERE ID_Запчасти = {productId}
+            ), {term}), 'dd.MM.yyyy') as ArrivalDate, ArrivalTime
+            FROM SupplierWarehouse
+            WHERE Id = (
+                SELECT WarehouseId FROM [Каталоги поставщиков] WHERE ID_Запчасти = {productId}
+            )`;

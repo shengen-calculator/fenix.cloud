@@ -2,6 +2,7 @@ import {getAnalogs} from "./search/getAnalogs";
 import {getPhotos} from "./search/getPhotos";
 import {authDecorator} from "./authDecorator";
 import {searchByNumber} from "./search/searchByNumber";
+import {getDeliveryDate} from "./search/getDeliveryDate";
 import {searchByBrandAndNumber} from "./search/searchByBrandAndNumber";
 import {ROLE} from "./role";
 
@@ -12,4 +13,6 @@ exports.getPhotos = authDecorator(getPhotos,
 exports.searchByNumber = authDecorator(searchByNumber,
     [ROLE.ADMIN, ROLE.MANAGER, ROLE.CLIENT]);
 exports.searchByBrandAndNumber = authDecorator(searchByBrandAndNumber,
+    [ROLE.ADMIN, ROLE.MANAGER, ROLE.CLIENT]);
+exports.getDeliveryDate = authDecorator(getDeliveryDate,
     [ROLE.ADMIN, ROLE.MANAGER, ROLE.CLIENT]);

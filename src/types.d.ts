@@ -1,5 +1,6 @@
 type QueryResult = {
     recordset: Array<any>
+    rowsAffected: Array<any>
 }
 
 type SqlParameter = {
@@ -78,6 +79,12 @@ type SearchByBrandAndNumberInput = {
 type GetDeliveryDateInput = {
     productId: number
     term: number
+}
+
+type UpdatePriceInput = {
+    productId: number
+    price: number
+    discount: number
 }
 
 type GetAnalogsInput = {

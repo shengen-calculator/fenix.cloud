@@ -107,11 +107,28 @@ export const GET_PARTS_BY_BRAND_AND_NUMBER = `
           AND (dbo.[Запросы клиентов].Обработано = 0)`;
 
 export const GET_DELIVERY_DATE = `
-            SET DATEFIRST 1
-            SELECT FORMAT(dbo.GetArrivalDate((
-                SELECT WarehouseId FROM [Каталоги поставщиков] WHERE ID_Запчасти = {productId}
-            ), {term}), 'dd.MM.yyyy') as ArrivalDate, ArrivalTime
-            FROM SupplierWarehouse
-            WHERE Id = (
-                SELECT WarehouseId FROM [Каталоги поставщиков] WHERE ID_Запчасти = {productId}
-            )`;
+        SET DATEFIRST 1
+        SELECT FORMAT(dbo.GetArrivalDate((
+            SELECT WarehouseId FROM [Каталоги поставщиков] WHERE ID_Запчасти = {productId}
+        ), {term}), 'dd.MM.yyyy') as ArrivalDate, ArrivalTime
+        FROM SupplierWarehouse
+        WHERE Id = (
+            SELECT WarehouseId FROM [Каталоги поставщиков] WHERE ID_Запчасти = {productId}
+        )`;
+export const UPDATE_PRICE = `
+        UPDATE dbo.[Каталог запчастей]
+        SET Скидка          = {discount},
+            Цена            = {price},
+            Цена4           = {price4},
+            Цена14          = {price14},
+            Цена12          = {price12},
+            Цена5           = {price5},
+            Цена6           = {price6},
+            Цена1           = {price1},
+            Цена2           = {price2},
+            Цена3           = {price3},
+            Цена10          = {price10},
+            Цена7           = {price7},
+            Цена13          = {price13},
+            Цена_обработана = {isPriceHandled}
+        WHERE ID_Запчасти = {productId}`;

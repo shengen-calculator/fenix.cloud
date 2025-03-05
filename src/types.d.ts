@@ -6,7 +6,8 @@ type QueryResult = {
 type SqlParameter = {
     name: string
     type: import("mssql").ISqlTypeFactoryWithNoParams |
-        import("mssql").ISqlTypeWithLength
+        import("mssql").ISqlTypeWithLength |
+        import("mssql").ISqlTypeWithPrecisionScale
     value: string | number | boolean
 }
 
@@ -91,6 +92,24 @@ type GetAnalogsInput = {
     analogId?: number
     brand: string
     number: string
+}
+
+type CreateReserveInput = {
+    clientId: number
+    productId: number
+    isEuroClient: boolean
+    quantity: number
+    price?: number
+}
+
+type CreateOrderInput = {
+    clientId: number
+    productId: number
+    onlyOrderedQuantity: boolean
+    isEuroClient: boolean
+    quantity: number
+    price?: number
+    vip?: string
 }
 
 type AnalogInfo = {

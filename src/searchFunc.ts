@@ -4,6 +4,8 @@ import {authDecorator} from "./authDecorator";
 import {updatePrice} from "./search/updatePrice";
 import {searchByNumber} from "./search/searchByNumber";
 import {getDeliveryDate} from "./search/getDeliveryDate";
+import {createOrder} from "./search/createOrder";
+import {createReserve} from "./search/createReserve";
 import {searchByBrandAndNumber} from "./search/searchByBrandAndNumber";
 import {ROLE} from "./role";
 
@@ -19,3 +21,7 @@ exports.getDeliveryDate = authDecorator(getDeliveryDate,
     [ROLE.ADMIN, ROLE.MANAGER, ROLE.CLIENT]);
 exports.updatePrice = authDecorator(updatePrice,
     [ROLE.ADMIN, ROLE.MANAGER]);
+exports.createReserve = authDecorator(createReserve,
+    [ROLE.ADMIN, ROLE.MANAGER, ROLE.CLIENT]);
+exports.createOrder = authDecorator(createOrder,
+    [ROLE.ADMIN, ROLE.MANAGER, ROLE.CLIENT]);

@@ -36,6 +36,8 @@ export const GET_PARTS_BY_NUMBER = `
             ,firstBrend
        FROM getPartsByNumber('{number}')`;
 export const SP_GET_PRODUCTS_BY_BRAND = "sp_web_getproductsbybrand";
+export const SP_ADD_RESERVE = "sp_web_addreserve";
+export const SP_ADD_ORDER = "sp_web_addorder";
 export const GET_PARTS_BY_ANALOG = `
        SELECT  RTRIM(dbo.Клиенты.VIP)                        AS vip,
                RTRIM(dbo.Поставщики.[Сокращенное название])  AS vendor,

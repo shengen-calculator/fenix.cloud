@@ -132,3 +132,11 @@ export const UPDATE_PRICE = `
             Цена13          = {price13},
             Цена_обработана = {isPriceHandled}
         WHERE ID_Запчасти = {productId}`;
+export const GET_CLIENT_DEBT = `
+        SELECT dbo.Клиенты.VIP as vip,
+            dbo.GetAmountOverdueDebt(dbo.Клиенты.ID_Клиента, - ISNULL(dbo.Клиенты.Количество_дней, 0)) AS overdueDebt                
+        FROM dbo.Должок INNER JOIN
+            dbo.Клиенты ON dbo.Должок.ID_Клиента = dbo.Клиенты.ID_Клиента FULL OUTER JOIN
+            dbo.Проплачено ON dbo.Должок.ID_Клиента = dbo.Проплачено.ID_Клиента
+        WHERE (dbo.Клиенты.Выводить_просрочку = 1) AND 
+              (dbo.Клиенты.ID_Клиента like '{clientId}')`;

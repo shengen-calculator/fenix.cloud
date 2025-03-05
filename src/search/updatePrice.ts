@@ -23,7 +23,7 @@ export const updatePrice = async (request: CallableRequest) => {
         price3: input.price === 0 ?
             "null" : (1 - (1 - 0.85) * input.discount / 35) * retail,
         price10: input.price === 0 ?
-            "null" : (1 - (1 - 0.55) * input.discount / 35) * retail,
+            "null" : (1 - (1 - 0.55) * input.discount / 40) * retail,
         price7: input.price === 0 ? "null" : input.price,
         price13: input.price === 0 ? "null" : input.price,
         isPriceHandled: input.price === 0 ? 0 : 1,

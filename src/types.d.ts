@@ -97,6 +97,11 @@ type AnalogInfo = {
     analogId: number
 }
 
+type ClientDebt = {
+    overdueDebt: number
+    vip: string
+}
+
 type GetPaymentsInput = BaseInput
 
 type GetSalesInput = BaseInput

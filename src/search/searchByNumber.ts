@@ -7,8 +7,12 @@ import DatastoreHelper from "../DatastoreHelper";
 
 export const searchByNumber = async (request: CallableRequest) => {
     let number = request.data;
-    // eslint-disable-next-line max-len, quotes
-    const special = ["@", "#", "_", "&", "-", "+", "(", ")", "/", "*", '"', "'", ":", ";", "!", "?", "=", "[", "]", "©", "|", "\\", "%", " "];
+    const special = [
+        // eslint-disable-next-line quotes
+        "@", "#", "_", "&", "-", "+", "(", ")", "/", "*", '"',
+        "'", ":", ";", "!", "?", "=", "[", "]", "©", "|", "\\",
+        "%", " ",
+    ];
     special.forEach((el) => {
         const tokens = number.split(el);
         number = tokens.join("");

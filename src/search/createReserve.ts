@@ -57,7 +57,5 @@ export const createReserve = async (request: CallableRequest) => {
         },
     ], SP_ADD_RESERVE, true);
     const [reserve] = await sqlHelper.sendRequests([addReserveRequest]);
-    return {
-        rowsAffected: reserve.rowsAffected,
-    };
+    return reserve.recordset;
 };

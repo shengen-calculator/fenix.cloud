@@ -59,7 +59,5 @@ export const createOrder = async (request: CallableRequest) => {
         },
     ], SP_ADD_ORDER, true);
     const [order] = await sqlHelper.sendRequests([addOrderRequest]);
-    return {
-        rowsAffected: order.rowsAffected,
-    };
+    return order.recordset;
 };

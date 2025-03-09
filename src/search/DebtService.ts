@@ -33,7 +33,7 @@ export default class DebtService {
         }));
         const sqlResponse = await sqlHelper.sendQuery();
         const debtRecord: ClientDebt = sqlResponse.recordset.pop();
-        if (Math.sign(debtRecord.overdueDebt) !== 1) {
+        if (Math.sign(debtRecord?.overdueDebt || 0) !== 1) {
             return false;
         }
 

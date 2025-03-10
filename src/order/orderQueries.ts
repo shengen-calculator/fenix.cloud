@@ -44,3 +44,13 @@ export const GET_ORDERS = `
             END as status
       FROM dbo.Запросы
       WHERE VIP like '{vip}' AND [Обработано] = 0 AND [ID_Клиента] <> 378 AND ([Нет] = 0 OR DATEDIFF(hour, [Дата], SYSDATETIME()) < 168)`;
+export const DELETE_RESERVES = `
+      DELETE FROM dbo.[Подчиненная накладные] 
+      WHERE ID IN (
+          SELECT Name FROM dbo.SplitString('{ids}')
+      )`;
+export const DELETE_ORDERS = `
+      UPDATE dbo.[Запросы клиентов] SET Заказано = 0, Обработано = 1 
+      WHERE ID_Запроса IN (
+          SELECT Name FROM dbo.SplitString ('{ids}')
+      )`;

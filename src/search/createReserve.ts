@@ -53,7 +53,7 @@ export const createReserve = async (request: CallableRequest) => {
             name: "currentUser",
             // eslint-disable-next-line new-cap
             type: sql.VarChar(20),
-            value: request.auth?.token?.["email"] || "",
+            value: (request.auth?.token?.["email"] || "").slice(0, 20),
         },
     ], SP_ADD_RESERVE, true);
     const [reserve] = await sqlHelper.sendRequests([addReserveRequest]);

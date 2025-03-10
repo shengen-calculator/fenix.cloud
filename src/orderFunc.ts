@@ -1,3 +1,5 @@
+import {updateReserveQuantity} from "./order/updateReserveQuantity";
+import {updateOrderQuantity} from "./order/updateOrderQuantity";
 import {deleteReservesByIds} from "./order/deleteReservesByIds";
 import {deleteOrdersByIds} from "./order/deleteOrdersByIds";
 import {getReservesByVip} from "./order/getReservesByVip";
@@ -12,4 +14,8 @@ exports.getOrdersByVip = authDecorator(getOrdersByVip,
 exports.deleteReservesByIds = authDecorator(deleteReservesByIds,
     [ROLE.ADMIN, ROLE.MANAGER]);
 exports.deleteOrdersByIds = authDecorator(deleteOrdersByIds,
+    [ROLE.ADMIN, ROLE.MANAGER]);
+exports.updateReserveQuantity = authDecorator(updateReserveQuantity,
+    [ROLE.ADMIN, ROLE.MANAGER]);
+exports.updateOrderQuantity = authDecorator(updateOrderQuantity,
     [ROLE.ADMIN, ROLE.MANAGER]);

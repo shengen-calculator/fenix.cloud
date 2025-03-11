@@ -54,3 +54,8 @@ export const DELETE_ORDERS = `
       WHERE ID_Запроса IN (
           SELECT Name FROM dbo.SplitString ('{ids}')
       )`;
+export const UPDATE_ORDER = `
+      UPDATE dbo.[Запросы клиентов] 
+      SET Заказано = {quantity} 
+      WHERE ID_Запроса = {orderId}`;
+export const SP_UPDATE_RESERVE = "sp_web_updatereserveqty";

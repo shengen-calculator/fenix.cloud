@@ -112,6 +112,17 @@ type CreateOrderInput = {
     vip?: string
 }
 
+type UpdateOrderInput = {
+    orderId: number
+    quantity: number
+}
+
+type UpdateReserveInput = {
+    reserveId: number
+    quantity: number
+    productId: number
+}
+
 type AnalogInfo = {
     analogId: number
 }
